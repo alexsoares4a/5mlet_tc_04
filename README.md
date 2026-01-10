@@ -44,7 +44,7 @@ A arquitetura foi desenhada para ser simples, robusta e reprodutível, garantind
 
 ### 🔧 Requisitos
 
-* Python 3.9 ou superior
+* Python 3.12 ou superior
 * `pip` (gerenciador de pacotes)
 * Docker (opcional, para rodar via container)
 
@@ -76,6 +76,7 @@ A arquitetura foi desenhada para ser simples, robusta e reprodutível, garantind
 5.  **Acesse a documentação**
     A API estará disponível em: `http://localhost:8000/docs`
 
+    > *Optando pela execução tradicional você pode partir para a seção '**Como Testar os Endpoints no Swagger UI**'*
 ---
 
 ## 🐳 Como Rodar com Docker
@@ -84,15 +85,53 @@ Para evitar conflitos de dependências, recomenda-se o uso do Docker.
 
 1.  **Construa a imagem**
     ```bash
-    docker build -t tc4-api-invest .
+    docker build -t lstm-itau-api .
     ```
 
 2.  **Execute o container**
     ```bash
-    docker run -p 8000:8000 tc4-api-invest
+    docker run -p 8000:8000 lstm-itau-api
     ```
 
 A API estará disponível em `http://localhost:8000`.
+
+---
+
+## 📊 Monitoramento com MLflow
+
+O treinamento do modelo é registrado automaticamente no **MLflow**, uma plataforma open-source para rastreamento de experimentos de Machine Learning. Isso permite acompanhar métricas (MAE, RMSE, R², MAPE), hiperparâmetros e artefatos gerados.
+
+### Como visualizar os resultados
+
+1. **Treine o modelo** (se ainda não fez):
+   ```bash
+   python src/train.py
+   ```
+   > *Isso gera a pasta `mlruns/` na raiz do projeto.*
+
+2. **Inicie o MLflow UI:**:
+   ```bash
+   mlflow ui
+   ```
+   > *Por padrão, o servidor roda em `http://localhost:5000`.*
+
+3. **Acesse a interface no navegador:**:
+   ```bash
+   http://localhost:5000
+   ```
+
+4. **Navegue pelos experimentos:**:
+- Clique no experimento `ITUB4_SA_LSTM`;
+- Selecione a run mais recente (ex: `lstm_itau_60d`);
+- Na aba **"Metrics"**, veja os valores de:
+    - `MAE`: Erro absoluto médio (R$)
+    - `RMSE`: Raiz do erro quadrático médio (R$)
+    - `R2`: Coeficiente de determinação (quanto mais próximo de 1, melhor)
+    - `MAPE`: Erro percentual médio absoluto (%)
+- Na aba **"Params"**, confira os hiperparâmetros usados (janela de 60 dias, dropout=0.2, etc.);
+- Na aba **"Artifacts"**, você verá o modelo salvo (`model/`).
+
+>💡 Dica: Mantenha o terminal com `mlflow ui` aberto enquanto testa diferentes versões do modelo - ele atualiza automaticamente!
 
 ---
 
@@ -106,7 +145,10 @@ Acesse `http://localhost:8000/docs` para ver a interface interativa do **Swagger
 - Clique em **`/health`** → **"Try it out"** → **"Execute"**  
 - **Resposta esperada**:  
   ```json
-  { "status": "healthy", "model_loaded": true }
+    { 
+        "status": "healthy", 
+        "model_loaded": true 
+    }
 
 ---
 
@@ -120,7 +162,14 @@ Acesse `http://localhost:8000/docs` para ver a interface interativa do **Swagger
     {
         "asset": "ITUB4.SA",
         "window_size": 60,
-        "prices": [32.50, 32.80, ..., 29.50]  // ← lista de 60 números
+        "prices": [
+            34.20015335083008,
+            34.346893310546875,
+            34.346893310546875,
+            34.26435089111328, 
+            ...,
+            39.849998474121094
+        ] // ← lista de 60 números  
     }
 
 ---
@@ -139,7 +188,14 @@ Acesse `http://localhost:8000/docs` para ver a interface interativa do **Swagger
     {
         "asset": "ITUB4.SA",
         "window_size": 60,
-        "prices": [32.50, 32.80, ..., 29.50]  // ← lista de 60 números
+        "prices": [
+            34.20015335083008,
+            34.346893310546875,
+            34.346893310546875,
+            34.26435089111328, 
+            ...,
+            39.849998474121094
+        ] // ← lista de 60 números  
     }
   ```
 
@@ -148,20 +204,19 @@ Acesse `http://localhost:8000/docs` para ver a interface interativa do **Swagger
   - **Resposta esperada**:  
   ```json
     {
-        "predicted_close": 29.65,
+        "predicted_close": 38.35,
         "asset": "ITUB4.SA",
         "window_size": 60,
-        "last_known_price": 29.50
+        "last_known_price": 39.85
     }
   ```
 ---
 
-> 💡 Dica: Você também pode digitar manualmente 60 valores, mas usar /data/latest é mais prático e realista!
+> 💡 Dica: Você também pode digitar manualmente 60 valores, mas usar `/data/latest` é mais prático e realista!
 
 ---
 
 ## 📁 Estrutura de Pastas e Módulos
-
 
 ```
 5mlet_tc_04/
@@ -179,12 +234,6 @@ Acesse `http://localhost:8000/docs` para ver a interface interativa do **Swagger
 └── README.md
 ```
 
----
-
-## 📈 Monitoramento e Observabilidade
-
-* **Treinamento:** Utilizamos o **MLflow** para registrar cada execução do `train.py`. Isso garante que saibamos exatamente quais hiperparâmetros (epochs, time_steps) geraram qual RMSE.
-    * *Comando:* `mlflow ui` (para visualizar o dashboard).
 ---
 
 ## ⚠️ Disclaimer
