@@ -1,6 +1,6 @@
 # 📈 Tech Challenge - Fase 4 - Machine Learning Engineering
 
-[![Python 3.12](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-005571?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-orange?logo=tensorflow)](https://www.tensorflow.org/)
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?logo=docker)](https://www.docker.com/)
@@ -29,7 +29,7 @@ A arquitetura foi desenhada para ser simples, robusta e reprodutível, garantind
 
 | Componente | Tecnologia | Motivação |
 |:----------|:-----------|:----------|
-| Linguagem | Python 3.9+ | Padrão da indústria para Data Science e ML. |
+| Linguagem | Python 3.12 | Padrão da indústria para Data Science e ML. |
 | API Framework | FastAPI | Alta performance, validação automática de dados (Pydantic) e documentação nativa (Swagger). |
 | Deep Learning | TensorFlow / Keras | Biblioteca robusta e escalável para construção e treinamento de redes neurais complexas. |
 | Rastreamento | MLflow | Gerenciamento do ciclo de vida de ML (parâmetros, métricas e versionamento de modelos). |
@@ -74,10 +74,13 @@ A arquitetura foi desenhada para ser simples, robusta e reprodutível, garantind
     ```
 
 5.  **Acesse a documentação**
-    A API estará disponível em: `http://localhost:8000/docs`
+
+    A API estará disponível em http://localhost:8000.  
+    A documentação (Swagger UI) está em http://localhost/docs.
 
     > *Optando pela execução tradicional você pode partir para a seção '**Como Testar os Endpoints no Swagger UI**'*
 ---
+
 
 ## 🐳 Como Rodar com Docker
 
@@ -93,7 +96,10 @@ Para evitar conflitos de dependências, recomenda-se o uso do Docker.
     docker run -p 8000:8000 lstm-itau-api
     ```
 
-A API estará disponível em `http://localhost:8000`.
+3.  **Acesse a documentação**
+
+    A API estará disponível em http://localhost:8000.  
+    A documentação (Swagger UI) está em http://localhost/docs.
 
 ---
 
@@ -109,16 +115,13 @@ O treinamento do modelo é registrado automaticamente no **MLflow**, uma platafo
    ```
    > *Isso gera a pasta `mlruns/` na raiz do projeto.*
 
-2. **Inicie o MLflow UI:**:
+2. **Inicie o MLflow UI**:
    ```bash
    mlflow ui
    ```
-   > *Por padrão, o servidor roda em `http://localhost:5000`.*
-
-3. **Acesse a interface no navegador:**:
-   ```bash
-   http://localhost:5000
-   ```
+3. **Acesse a interface no navegador**:
+   
+   > Por padrão, o servidor roda em http://localhost:5000
 
 4. **Navegue pelos experimentos:**:
 - Clique no experimento `ITUB4_SA_LSTM`;
