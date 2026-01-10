@@ -9,13 +9,11 @@
 
 ## 🧾 Descrição do Projeto
 
-Este projeto compõe a entrega do **Tech Challenge - Fase 4** do curso de Pós-Graduação em **Machine Learning Engineering** da **FIAP**.
+Este projeto é parte do **Tech Challenge - Fase 4** do curso de Pós-Graduação em **Machine Learning Engineering** da **Faculdade de Informática e Administração Paulista - FIAP**.
 
-O objetivo central é desenvolver uma solução completa de Deep Learning para a **previsão de preços de ações** (focando no ativo **ITUB4.SA - Itaú Unibanco**). O projeto abrange todo o ciclo de vida de ML:
-1.  **Coleta e Preparação:** Extração de dados históricos da B3 via `yfinance`.
-2.  **Modelagem:** Treinamento de uma Rede Neural Recorrente (**LSTM**) para séries temporais.
-3.  **Experiment Tracking:** Monitoramento de métricas e parâmetros com **MLflow**.
-4.  **Deploy:** Disponibilização do modelo através de uma **API RESTful** containerizada com **Docker**.
+O objetivo principal é desenvolver um **modelo preditivo baseado em LSTM (Long Short-Term Memory)** para prever o preço de fechamento diário da ação **Itaú Unibanco (ITUB4.SA)** listada na B3, e disponibilizá-lo via **API RESTful** com **containerização em Docker**.
+
+O modelo foi treinado exclusivamente com a série histórica de preços de fechamento (**abordagem univariada**), obtendo desempenho robusto sem depender de variáveis exógenas. A solução segue boas práticas de **MLOps**, com separação clara entre experimentação (notebook) e produção (`train.py` + `api.py`).
 
 A arquitetura foi desenhada para ser simples, robusta e reprodutível, garantindo que o modelo treinado possa ser consumido em produção com facilidade.
 
